@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Redirecting...</title>
+
+  <style>
+    body {
+      font-family: system-ui, Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+    }
+    .box {
+      text-align: center;
+      max-width: 320px;
+    }
+    a {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      background: #111;
+      color: #fff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <div>Opening app...</div>
+    <div id="status" style="margin-top:8px;font-size:14px;color:#666;"></div>
+    <a id="openApp" href="#">Open manually</a>
+  </div>
+
+  <script>
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get("access_token");
+
+      const status = document.getElementById("status");
+      const btn = document.getElementById("openApp");
+
+      if (!token) {
+        status.textContent = "Missing access token";
+        return;
+      }
+
+      const deepLink =
+        "respondnow://auth?access_token=" + encodeURIComponent(token);
+
+      btn.href = deepLink;
+
+      // Try auto-redirect
+      window.location.href = deepLink;
+
+      // Fallback message if blocked
+      setTimeout(() => {
+        status.textContent = "If nothing happened, tap the button below.";
+      }, 1500);
+    })();
+  </script>
+</body>
+</html>
