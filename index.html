@@ -38,31 +38,33 @@
   </div>
 
   <script>
-    (function () {
-      const params = new URLSearchParams(window.location.search);
-      const token = params.get("access_token");
+(function () {
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get("access_token");
 
-      const status = document.getElementById("status");
-      const btn = document.getElementById("openApp");
+  const status = document.getElementById("status");
+  const btn = document.getElementById("openApp");
 
-      if (!token) {
-        status.textContent = "Missing access token";
-        return;
-      }
+  if (!token) {
+    status.textContent = "Missing access token";
+    return;
+  }
 
-      const deepLink =
-        "respondnow://auth?access_token=" + encodeURIComponent(token);
+  const deepLink =
+    "respondnow://auth?access_token=" + encodeURIComponent(token);
 
-      btn.href = deepLink;
+  btn.href = deepLink;
 
-      // Try auto-redirect
-      window.location.href = deepLink;
+  // Attempt auto-open
+  setTimeout(() => {
+    window.location.href = deepLink;
+  }, 300);
 
-      // Fallback message if blocked
-      setTimeout(() => {
-        status.textContent = "If nothing happened, tap the button below.";
-      }, 1500);
-    })();
-  </script>
+  // Fallback message
+  setTimeout(() => {
+    status.textContent = "Auto-open blocked. Tap the button below.";
+  }, 1200);
+})();
+</script>
 </body>
 </html>
